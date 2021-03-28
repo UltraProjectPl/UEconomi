@@ -1,30 +1,7 @@
 from typing import List
 from time import sleep
-from random import randint
-from enum import Enum
-
-
-class Stuff(Enum):
-    Food = "food"
-
-
-class Person:
-    NAME = "PERSON"
-
-    def __init__(self, id: int, work: Stuff = None):
-        self.id: int = id
-        self.starving: int = 0
-        self.work = work
-
-    def hungry(self):
-        self.starving += randint(1, 3)
-
-
-class Farmer(Person):
-    NAME = "Farmer"
-
-    def __init__(self, id: int):
-        super().__init__(id, Stuff.Food)
+from perosons import Person, Farmer
+from market import Market
 
 
 def showPersons(persons: List[Person]):
@@ -43,9 +20,15 @@ for i in range(5):
 for i in range(3):
     persons.append(Farmer(i + 5))
 
+
+market = Market()
+
 for _ in range(10):
     for person in persons:
         person.hungry()
+
+        if person.work:
+            market.add_stuff(person.work, person.working())
         if person.starving > 10:
             persons.remove(person)
     showPersons(persons)
@@ -54,3 +37,5 @@ for _ in range(10):
 
 print("===============================END==========================================")
 showPersons(persons)
+print("Market value")
+print(market.stuffs)
