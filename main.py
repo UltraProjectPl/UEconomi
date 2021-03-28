@@ -1,6 +1,6 @@
 from typing import List
 from time import sleep
-from perosons import Person, Farmer
+from perosons import Person, Farmer, Stuff
 from market import Market
 import pprint
 
@@ -28,9 +28,13 @@ market = Market()
 for _ in range(10):
     for person in persons:
         person.hungry()
+        if person.buy_stuff_consider(market.market[Stuff.Food]["value"]) and 0 < market.market[Stuff.Food]["quantity"] and person.money >= market.market[Stuff.Food]["value"]:
+            food = market.sell_stuff(Stuff.Food)
+            person.money -= market.market[Stuff.Food]["value"]
+            person.starving -= food
 
         if person.work:
-            payout: float = market.sell_stuff(person.work, person.working())
+            payout: float = market.buy_stuff(person.work, person.working())
             person.money += payout
         if person.starving > 10:
             persons.remove(person)

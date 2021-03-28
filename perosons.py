@@ -21,6 +21,11 @@ class Person:
     def working(self, efficiency_min: int = 0, efficiency_max: int = 0):
         return None
 
+    def buy_stuff_consider(self, value: float) -> bool:
+        if 0 < self.starving:
+            return pow(self.starving, 2) <= (self.money / value) * 100
+        return False
+
 
 class Farmer(Person):
     NAME = "Farmer"
@@ -30,3 +35,4 @@ class Farmer(Person):
 
     def working(self, efficiency_min: int = 1, efficiency_max: int = 2) -> float:
         return randint(efficiency_min, efficiency_max)
+
