@@ -1,30 +1,47 @@
 from typing import List
 from time import sleep
 from random import randint
+from enum import Enum
+
+
+class Stuff(Enum):
+    Food = "food"
 
 
 class Person:
-    def __init__(self, id: int):
+    NAME = "PERSON"
+
+    def __init__(self, id: int, work: Stuff = None):
         self.id: int = id
         self.starving: int = 0
+        self.work = work
 
     def hungry(self):
         self.starving += randint(1, 3)
 
 
+class Farmer(Person):
+    NAME = "Farmer"
+
+    def __init__(self, id: int):
+        super().__init__(id, Stuff.Food)
+
+
 def showPersons(persons: List[Person]):
     for person in persons:
         print("""
-            Person:
+            {}:
                Id: {}
                Starving: {}
-        """.format(person.id, person.starving))
+        """.format(person.NAME, person.id, person.starving))
 
 
 persons: List[Person] = []
 for i in range(5):
     persons.append(Person(i))
 
+for i in range(3):
+    persons.append(Farmer(i + 5))
 
 for _ in range(10):
     for person in persons:
